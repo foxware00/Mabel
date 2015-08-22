@@ -27,4 +27,20 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services-location:7.8.0'
+    compile files('src/main/libs/google-http-client-1.20.0.jar')
+    compile files('src/main/libs/google-http-client-android-1.20.0.jar')
+    compile files('src/main/libs/gson-2.1.jar')
+    compile files('src/main/libs/jackson-core-asl-1.9.11.jar')
+    compile files('src/main/libs/jsr305-1.3.9.jar')
+    compile files('src/main/libs/protobuf-java-2.4.1.jar')
+    compile files('src/main/libs/jackson-core-2.1.3.jar')
+    compile('com.google.api-client:google-api-client:1.20.0') {
+//        exclude group: 'com.google.android.google-play-services'
+    }
+    //    compile('com.google.api-client:google-api-client-android:1.17.0-rc') {
+    //        exclude group: 'com.google.android.google-play-services'
+    //    }
+    compile files('src/main/libs/google-http-client-jackson-1.20.0.jar')
+    compile files('src/main/libs/google-http-client-gson-1.20.0.jar')
+    compile files('src/main/libs/google-http-client-jackson2-1.20.0.jar')
 }

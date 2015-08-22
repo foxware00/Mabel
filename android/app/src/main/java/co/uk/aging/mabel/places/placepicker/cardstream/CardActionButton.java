@@ -50,7 +50,7 @@ public class CardActionButton extends Button {
                 setPressed(true);
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                     animate().scaleX(0.98f).scaleY(0.98f).setDuration(100)
-                        .setInterpolator(new DecelerateInterpolator());
+                            .setInterpolator(new DecelerateInterpolator());
                 } else {
                     ViewCompat.setElevation(this, 8.f);
                 }
@@ -61,7 +61,7 @@ public class CardActionButton extends Button {
                 setPressed(false);
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                     animate().scaleX(1.f).scaleY(1.f).setDuration(50)
-                        .setInterpolator(new BounceInterpolator());
+                            .setInterpolator(new BounceInterpolator());
                 } else {
                     ViewCompat.setElevation(this, 0.f);
                 }

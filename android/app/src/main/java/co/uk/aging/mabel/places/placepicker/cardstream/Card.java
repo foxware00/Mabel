@@ -83,6 +83,7 @@ public class Card {
      * Represent actions that can be taken from the card.  Stylistically the developer can
      * designate the action as positive, negative (ok/cancel, for instance), or neutral.
      * This "type" can be used as a UI hint.
+     *
      * @see com.example.android.sensors.batchstepsensor.Card.CardAction
      */
     private ArrayList<CardAction> mCardActions = new ArrayList<CardAction>();
@@ -135,6 +136,7 @@ public class Card {
      * Set the UI state. The parameter describes the state and must be either
      * {@link #CARD_STATE_NORMAL}, {@link #CARD_STATE_FOCUSED} or {@link #CARD_STATE_INACTIVE}.
      * Note: This method must be called from the UI Thread.
+     *
      * @param state
      * @return The card itself, allows for chaining of calls
      */
@@ -181,6 +183,7 @@ public class Card {
      * Must be a value of either {@link #PROGRESS_TYPE_NORMAL},
      * {@link #PROGRESS_TYPE_INDETERMINATE}, {@link #PROGRESS_TYPE_LABEL} or
      * {@link #PROGRESS_TYPE_NO_PROGRESS}.
+     *
      * @param progressType
      * @return The card itself, allows for chaining of calls
      */
@@ -196,6 +199,7 @@ public class Card {
      * Return the progress indicator type. A value of either {@link #PROGRESS_TYPE_NORMAL},
      * {@link #PROGRESS_TYPE_INDETERMINATE}, {@link #PROGRESS_TYPE_LABEL}. Otherwise if no progress
      * indicator is enabled, {@link #PROGRESS_TYPE_NO_PROGRESS} is returned.
+     *
      * @return
      */
     public int getProgressType() {
@@ -208,6 +212,7 @@ public class Card {
     /**
      * Set the progress to the specified value. Only applicable if the card has a
      * {@link #PROGRESS_TYPE_NORMAL} progress type.
+     *
      * @param progress
      * @return
      * @see #setMaxProgress(int)
@@ -222,9 +227,10 @@ public class Card {
     /**
      * Set the range of the progress to 0...max. Only applicable if the card has a
      * {@link #PROGRESS_TYPE_NORMAL} progress type.
+     *
      * @return
      */
-    public Card setMaxProgress(int max){
+    public Card setMaxProgress(int max) {
         if (mCardProgress != null) {
             mCardProgress.setMax(max);
         }
@@ -235,6 +241,7 @@ public class Card {
      * Set the label text for the progress if the card has a progress type of
      * {@link #PROGRESS_TYPE_NORMAL}, {@link #PROGRESS_TYPE_INDETERMINATE} or
      * {@link #PROGRESS_TYPE_LABEL}
+     *
      * @param text
      * @return
      */
@@ -250,6 +257,7 @@ public class Card {
      * the card has a progress type of
      * {@link #PROGRESS_TYPE_NORMAL}, {@link #PROGRESS_TYPE_INDETERMINATE} or
      * {@link #PROGRESS_TYPE_LABEL}.
+     *
      * @param isVisible
      * @return
      */
@@ -279,6 +287,7 @@ public class Card {
 
     /**
      * Toggles the visibility of a card action.
+     *
      * @param actionId
      * @param isVisible
      * @return
@@ -295,6 +304,7 @@ public class Card {
 
     /**
      * Toggles visibility of the action area of this Card through an animation.
+     *
      * @param isVisible
      * @return
      */
@@ -378,6 +388,7 @@ public class Card {
 
         /**
          * Instantiate the builder with data from a shallow clone.
+         *
          * @param listener
          * @param card
          * @see Card#createShallowClone()
@@ -389,6 +400,7 @@ public class Card {
 
         /**
          * Instantiate the builder with the tag of the card.
+         *
          * @param listener
          * @param tag
          */
@@ -414,8 +426,8 @@ public class Card {
          * {@link #ACTION_NEUTRAL}, {@link #ACTION_POSITIVE} or {@link #ACTION_NEGATIVE}.
          *
          * @param label The text to display for this action
-         * @param id Identifier for this action, supplied in the click listener
-         * @param type UI style of action
+         * @param id    Identifier for this action, supplied in the click listener
+         * @param type  UI style of action
          * @return
          */
         public Builder addAction(String label, int id, int type) {
@@ -427,6 +439,7 @@ public class Card {
          * Override the default layout.
          * The referenced layout file has to contain the same identifiers as defined in the default
          * layout configuration.
+         *
          * @param layout
          * @return
          * @see R.layout.card
@@ -440,13 +453,13 @@ public class Card {
          * Set the type of progress bar to display.
          * Accepted values are:
          * <ul>
-         *     <li>{@link #PROGRESS_TYPE_NO_PROGRESS} disables the progress indicator</li>
-         *     <li>{@link #PROGRESS_TYPE_NORMAL} 
-         *     displays a standard, linear progress indicator.</li>
-         *     <li>{@link #PROGRESS_TYPE_INDETERMINATE} displays an indeterminate (infite) progress
-         *     indicator.</li>
-         *     <li>{@link #PROGRESS_TYPE_LABEL} only displays a label text in the progress area
-         *     of the card.</li>
+         * <li>{@link #PROGRESS_TYPE_NO_PROGRESS} disables the progress indicator</li>
+         * <li>{@link #PROGRESS_TYPE_NORMAL}
+         * displays a standard, linear progress indicator.</li>
+         * <li>{@link #PROGRESS_TYPE_INDETERMINATE} displays an indeterminate (infite) progress
+         * indicator.</li>
+         * <li>{@link #PROGRESS_TYPE_LABEL} only displays a label text in the progress area
+         * of the card.</li>
          * </ul>
          *
          * @param progressType
@@ -521,6 +534,7 @@ public class Card {
 
         /**
          * Initialize data from the given card.
+         *
          * @param card
          * @return
          * @see Card#createShallowClone()
@@ -531,8 +545,9 @@ public class Card {
         }
 
         /**
-         * Build the action views by inflating the appropriate layouts and setting the text and 
+         * Build the action views by inflating the appropriate layouts and setting the text and
          * values.
+         *
          * @param inflater
          * @param cardView
          * @param actionArea
@@ -588,7 +603,7 @@ public class Card {
             if (mCard.mCardProgress != null) {
                 //Setup progress card.
                 View progressView = inflater.inflate(R.layout.card_progress, actionArea, false);
-                ProgressBar progressBar = 
+                ProgressBar progressBar =
                         (ProgressBar) progressView.findViewById(R.id.card_progress);
                 ((TextView) progressView.findViewById(R.id.card_progress_text))
                         .setText(mCard.mCardProgress.label);
@@ -654,6 +669,7 @@ public class Card {
 
         /**
          * Set the progress. Only useful for the type {@link #PROGRESS_TYPE_NORMAL}.
+         *
          * @param progress
          * @see android.widget.ProgressBar#setProgress(int)
          */
@@ -669,6 +685,7 @@ public class Card {
         /**
          * Set the range of the progress to 0...max.
          * Only useful for the type {@link #PROGRESS_TYPE_NORMAL}.
+         *
          * @param max
          * @see android.widget.ProgressBar#setMax(int)
          */
@@ -682,6 +699,7 @@ public class Card {
 
         /**
          * Set the label text that appears near the progress indicator.
+         *
          * @param text
          */
         public void setProgressLabel(String text) {
@@ -695,9 +713,10 @@ public class Card {
         /**
          * Set how progress is displayed. The parameter must be one of three supported types:
          * <ul><li>{@link Card#PROGRESS_TYPE_NORMAL: Standard progress bar with label text</li>
-         * <li>{@link Card#PROGRESS_TYPE_INDETERMINATE}: 
+         * <li>{@link Card#PROGRESS_TYPE_INDETERMINATE}:
          * Indeterminate progress bar with label txt</li>
          * <li>{@link Card#PROGRESS_TYPE_LABEL}: Label only, no progresss bar</li>
+         *
          * @param type
          */
         public void setProgressType(int type) {

@@ -34,7 +34,6 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-
 import java.util.ArrayList;
 
 import co.uk.aging.mabel.places.common.logger.Log;
@@ -112,7 +111,7 @@ public class CardStreamLinearLayout extends LinearLayout {
 
                         // User let go - figure out whether to animate the view out, or back into place
                         boolean remove = deltaXAbs > v.getWidth() / 4 && !isFixedView(v);
-                        if( remove )
+                        if (remove)
                             handleViewSwipingOut(v, deltaX, deltaY);
                         else
                             handleViewSwipingIn(v, deltaX, deltaY);
@@ -212,7 +211,7 @@ public class CardStreamLinearLayout extends LinearLayout {
             initCard(cardView, canDismiss);
 
             ViewGroup.LayoutParams param = cardView.getLayoutParams();
-            if(param == null)
+            if (param == null)
                 param = generateDefaultLayoutParams();
 
             super.addView(cardView, -1, param);
@@ -233,7 +232,7 @@ public class CardStreamLinearLayout extends LinearLayout {
         super.onLayout(changed, l, t, r, b);
         Log.d(TAG, "onLayout: " + changed);
 
-        if( changed && !mLayouted ){
+        if (changed && !mLayouted) {
             mLayouted = true;
 
             ObjectAnimator animator;
@@ -247,12 +246,12 @@ public class CardStreamLinearLayout extends LinearLayout {
 
             layoutTransition.addTransitionListener(mTransitionListener);
 
-            if( animator != null )
+            if (animator != null)
                 layoutTransition.setDuration(animator.getDuration());
 
             setLayoutTransition(layoutTransition);
 
-            if( mShowInitialAnimation )
+            if (mShowInitialAnimation)
                 runInitialAnimations();
 
             if (mFirstVisibleCardTag != null) {
@@ -279,7 +278,7 @@ public class CardStreamLinearLayout extends LinearLayout {
         boolean swipping = false;
         float absDeltaX = Math.abs(deltaX);
 
-        if( absDeltaX > mSwipeSlop )
+        if (absDeltaX > mSwipeSlop)
             return true;
 
         return swipping;
@@ -288,13 +287,13 @@ public class CardStreamLinearLayout extends LinearLayout {
     /**
      * Swipe a view by moving distance
      *
-     * @param child a target view
+     * @param child  a target view
      * @param deltaX x moving distance by x-axis.
      * @param deltaY y moving distance by y-axis.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void swipeView(View child, float deltaX, float deltaY) {
-        if (isFixedView(child)){
+        if (isFixedView(child)) {
             deltaX = deltaX / 4;
         }
 
@@ -310,8 +309,8 @@ public class CardStreamLinearLayout extends LinearLayout {
             child.setRotationY(15.f * fractionCovered);
     }
 
-    protected void notifyOnDismissEvent( View child ){
-        if( child == null || mDismissListener == null )
+    protected void notifyOnDismissEvent(View child) {
+        if (child == null || mDismissListener == null)
             return;
 
         mDismissListener.onDismiss((String) child.getTag());
@@ -360,25 +359,25 @@ public class CardStreamLinearLayout extends LinearLayout {
      * If this flag is set,
      * after finishing initial onLayout event, an initial animation which is defined in DefaultCardStreamAnimator is launched.
      */
-    public void triggerShowInitialAnimation(){
+    public void triggerShowInitialAnimation() {
         mShowInitialAnimation = true;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void setCardStreamAnimator( CardStreamAnimator animators ){
+    public void setCardStreamAnimator(CardStreamAnimator animators) {
 
-        if( animators == null )
+        if (animators == null)
             mAnimators = new CardStreamAnimator.EmptyAnimator();
         else
             mAnimators = animators;
 
         LayoutTransition layoutTransition = getLayoutTransition();
 
-        if( layoutTransition != null ){
-            layoutTransition.setAnimator( LayoutTransition.APPEARING,
-                    mAnimators.getAppearingAnimator(getContext()) );
-            layoutTransition.setAnimator( LayoutTransition.DISAPPEARING,
-                    mAnimators.getDisappearingAnimator(getContext()) );
+        if (layoutTransition != null) {
+            layoutTransition.setAnimator(LayoutTransition.APPEARING,
+                    mAnimators.getAppearingAnimator(getContext()));
+            layoutTransition.setAnimator(LayoutTransition.DISAPPEARING,
+                    mAnimators.getDisappearingAnimator(getContext()));
         }
     }
 
@@ -400,9 +399,9 @@ public class CardStreamLinearLayout extends LinearLayout {
             TypedArray a = getContext().obtainStyledAttributes(attrs,
                     R.styleable.CardStream, defStyle, 0);
 
-            if( a != null ){
+            if (a != null) {
                 int speedType = a.getInt(R.styleable.CardStream_animationDuration, 1001);
-                switch (speedType){
+                switch (speedType) {
                     case ANIMATION_SPEED_FAST:
                         speedFactor = 0.5f;
                         break;
@@ -417,13 +416,13 @@ public class CardStreamLinearLayout extends LinearLayout {
                 String animatorName = a.getString(R.styleable.CardStream_animators);
 
                 try {
-                    if( animatorName != null )
+                    if (animatorName != null)
                         mAnimators = (CardStreamAnimator) getClass().getClassLoader()
                                 .loadClass(animatorName).newInstance();
                 } catch (Exception e) {
                     Log.e(TAG, "Fail to load animator:" + animatorName, e);
                 } finally {
-                    if(mAnimators == null)
+                    if (mAnimators == null)
                         mAnimators = new DefaultCardStreamAnimator();
                 }
                 a.recycle();
@@ -459,15 +458,15 @@ public class CardStreamLinearLayout extends LinearLayout {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void runInitialAnimations() {
-        if( mAnimators == null )
+        if (mAnimators == null)
             return;
 
         final int count = getChildCount();
 
         for (int index = 0; index < count; ++index) {
             final View child = getChildAt(index);
-            ObjectAnimator animator =  mAnimators.getInitalAnimator(getContext());
-            if( animator != null ){
+            ObjectAnimator animator = mAnimators.getInitalAnimator(getContext());
+            if (animator != null) {
                 animator.setTarget(child);
                 animator.start();
             }
@@ -485,7 +484,7 @@ public class CardStreamLinearLayout extends LinearLayout {
 
     private void handleViewSwipingOut(final View child, float deltaX, float deltaY) {
         ObjectAnimator animator = mAnimators.getSwipeOutAnimator(child, deltaX, deltaY);
-        if( animator != null ){
+        if (animator != null) {
             animator.addListener(new EndAnimationWrapper() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -498,7 +497,7 @@ public class CardStreamLinearLayout extends LinearLayout {
             notifyOnDismissEvent(child);
         }
 
-        if( animator != null ){
+        if (animator != null) {
             animator.setTarget(child);
             animator.start();
         }
@@ -506,7 +505,7 @@ public class CardStreamLinearLayout extends LinearLayout {
 
     private void handleViewSwipingIn(final View child, float deltaX, float deltaY) {
         ObjectAnimator animator = mAnimators.getSwipeInAnimator(child, deltaX, deltaY);
-        if( animator != null ){
+        if (animator != null) {
             animator.addListener(new EndAnimationWrapper() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -519,7 +518,7 @@ public class CardStreamLinearLayout extends LinearLayout {
             child.setTranslationX(0.f);
         }
 
-        if( animator != null ){
+        if (animator != null) {
             animator.setTarget(child);
             animator.start();
         }
@@ -535,8 +534,8 @@ public class CardStreamLinearLayout extends LinearLayout {
             if (tag.equals(child.getTag())) {
 
                 ViewParent parent = getParent();
-                if( parent != null && parent instanceof ScrollView ){
-                    ((ScrollView)parent).smoothScrollTo(
+                if (parent != null && parent instanceof ScrollView) {
+                    ((ScrollView) parent).smoothScrollTo(
                             0, child.getTop() - getPaddingTop() - child.getPaddingTop());
                 }
                 return;

@@ -228,7 +228,7 @@ public class CardStreamFragment extends Fragment {
     public void restoreState(CardStreamState state, OnCardClickListener callback) {
         // restore hidden cards
         for (Card c : state.hiddenCards) {
-            Card card = new Card.Builder(callback,c).build(getActivity());
+            Card card = new Card.Builder(callback, c).build(getActivity());
             mHiddenCards.put(card.getTag(), card);
         }
 
@@ -237,7 +237,7 @@ public class CardStreamFragment extends Fragment {
 
         //restore shown cards
         for (Card c : state.visibleCards) {
-            Card card = new Card.Builder(callback,c).build(getActivity());
+            Card card = new Card.Builder(callback, c).build(getActivity());
             addCard(card);
             final String tag = card.getTag();
             showCard(tag, dismissibleCards.contains(tag));

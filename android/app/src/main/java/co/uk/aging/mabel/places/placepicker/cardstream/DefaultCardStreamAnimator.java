@@ -30,7 +30,7 @@ class DefaultCardStreamAnimator extends CardStreamAnimator {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public ObjectAnimator getDisappearingAnimator(Context context){
+    public ObjectAnimator getDisappearingAnimator(Context context) {
 
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(new Object(),
                 PropertyValuesHolder.ofFloat("alpha", 1.f, 0.f),
@@ -44,7 +44,7 @@ class DefaultCardStreamAnimator extends CardStreamAnimator {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
-    public ObjectAnimator getAppearingAnimator(Context context){
+    public ObjectAnimator getAppearingAnimator(Context context) {
 
         final Point outPoint = new Point();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -61,7 +61,7 @@ class DefaultCardStreamAnimator extends CardStreamAnimator {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
-    public ObjectAnimator getInitalAnimator(Context context){
+    public ObjectAnimator getInitalAnimator(Context context) {
 
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(new Object(),
                 PropertyValuesHolder.ofFloat("alpha", 0.5f, 1.f),
@@ -73,7 +73,7 @@ class DefaultCardStreamAnimator extends CardStreamAnimator {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public ObjectAnimator getSwipeInAnimator(View view, float deltaX, float deltaY){
+    public ObjectAnimator getSwipeInAnimator(View view, float deltaX, float deltaY) {
 
         float deltaXAbs = Math.abs(deltaX);
 
@@ -89,12 +89,12 @@ class DefaultCardStreamAnimator extends CardStreamAnimator {
 
         animator.setDuration(duration).setInterpolator(new BounceInterpolator());
 
-        return  animator;
+        return animator;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public ObjectAnimator getSwipeOutAnimator(View view, float deltaX, float deltaY){
+    public ObjectAnimator getSwipeOutAnimator(View view, float deltaX, float deltaY) {
 
         float endX;
         float endRotationY;

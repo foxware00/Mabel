@@ -47,7 +47,7 @@ public class CardLayout extends RelativeLayout {
         init();
     }
 
-    private void init(){
+    private void init() {
         setFocusable(true);
         setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         setWillNotDraw(false);
@@ -58,7 +58,7 @@ public class CardLayout extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 mSwiping = false;
@@ -70,9 +70,9 @@ public class CardLayout extends RelativeLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
 
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                if( !mSwiping ){
+                if (!mSwiping) {
                     mSwiping = Math.abs(mDownX - event.getX()) > mTouchSlop;
                 }
                 break;

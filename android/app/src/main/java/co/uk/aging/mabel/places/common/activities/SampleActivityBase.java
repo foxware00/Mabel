@@ -36,12 +36,14 @@ public class SampleActivityBase extends FragmentActivity {
     }
 
     @Override
-    protected  void onStart() {
+    protected void onStart() {
         super.onStart();
         initializeLogging();
     }
 
-    /** Set up targets to receive log data */
+    /**
+     * Set up targets to receive log data
+     */
     public void initializeLogging() {
         // Using Log, front-end to the logging chain, emulates android.util.log method signatures.
         // Wraps Android's native log framework

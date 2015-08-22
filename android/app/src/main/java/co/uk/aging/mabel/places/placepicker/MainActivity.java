@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-
 import co.uk.aging.mabel.places.common.activities.SampleActivityBase;
 import co.uk.aging.mabel.places.placepicker.cardstream.CardStream;
 import co.uk.aging.mabel.places.placepicker.cardstream.CardStreamFragment;
@@ -54,7 +53,7 @@ public class MainActivity extends SampleActivityBase implements CardStream {
         }
 
         // Use fragment as click listener for cards, but must implement correct interface
-        if (!(fragment instanceof OnCardClickListener)){
+        if (!(fragment instanceof OnCardClickListener)) {
             throw new ClassCastException("PlacePickerFragment must " +
                     "implement OnCardClickListener interface.");
         }

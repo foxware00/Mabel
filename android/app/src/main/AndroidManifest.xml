@@ -6,6 +6,7 @@
        https://developers.google.com/places/documentation/android/start
        -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- PlacePicker also requires OpenGL ES version 2 -->
     <uses-feature
@@ -17,18 +18,16 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBElXNNn4cb4WGYl51zrE-IMstdVogu1xY"/>
         <activity
-            android:name="co.uk.aging.mabel.MainActivity"
-            android:label="@string/app_name">
+            android:name="co.uk.aging.mabel.PlacesActivity"
+            android:label="Places">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -39,6 +38,25 @@
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!--<activity-->
+            <!--android:name="co.uk.aging.mabel.places.SearchActivity"-->
+            <!--android:label="Search">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name="co.uk.aging.mabel.places.SinglePlaceActivity"
+            android:label="singlePLace">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             </intent-filter>
         </activity>
     </application>

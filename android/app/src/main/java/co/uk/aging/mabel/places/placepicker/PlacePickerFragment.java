@@ -40,7 +40,7 @@ import co.uk.hackathon.mabel.R;
  * Sample demonstrating the use of {@link PlacePicker}.
  * This sample shows the construction of an {@link Intent} to open the PlacePicker from the
  * Google Places API for Android and select a {@link Place}.
- *
+ * <p/>
  * This sample uses the CardStream sample template to create the UI for this demo, which is not
  * required to use the PlacePicker API. (Please see the Readme-CardStream.txt file for details.)
  *
@@ -163,7 +163,7 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
                 final CharSequence phone = place.getPhoneNumber();
                 final String placeId = place.getId();
                 String attribution = PlacePicker.getAttributions(data);
-                if(attribution == null){
+                if (attribution == null) {
                     attribution = "";
                 }
 
@@ -222,14 +222,16 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
      * Sets the visibility of the 'Pick Action' option on the 'Pick a place' card.
      * The action should be hidden when the PlacePicker Intent has been fired to prevent it from
      * being launched multiple times simultaneously.
+     *
      * @param show
      */
-    private void showPickAction(boolean show){
+    private void showPickAction(boolean show) {
         mCards.getCard(CARD_PICKER).setActionVisibility(ACTION_PICK_PLACE, show);
     }
 
     /**
      * Returns the CardStream.
+     *
      * @return
      */
     private CardStreamFragment getCardStream() {
