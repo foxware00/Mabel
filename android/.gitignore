@@ -24,5 +24,11 @@ out/
 *.ipr
 *.iws
 *.iml
+app/build/
+android/.gradle/*
+android/.gradle/2.4/
+android/local.properties
+.gradle/
+build/
 
 

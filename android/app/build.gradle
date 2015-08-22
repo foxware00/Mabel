@@ -43,4 +43,6 @@ dependencies {
     compile files('src/main/libs/google-http-client-jackson-1.20.0.jar')
     compile files('src/main/libs/google-http-client-gson-1.20.0.jar')
     compile files('src/main/libs/google-http-client-jackson2-1.20.0.jar')
+    compile files('src/libs/bolts-android-1.2.1.jar')
+    compile files('src/libs/Parse-1.10.1.jar')
 }
