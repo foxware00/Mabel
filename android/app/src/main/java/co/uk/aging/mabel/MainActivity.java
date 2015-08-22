@@ -1,13 +1,14 @@
 package co.uk.aging.mabel;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.parse.Parse;
 
 import co.uk.hackathon.mabel.R;
 
@@ -29,6 +30,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "HinYTJUCGswptyd2nphcj9Yn7hU1aSb9C2EbBJRX", "X7o7yOigQi16GSCei2rV7q6JQf3ruJ8kzGfRmYJE");
     }
 
     @Override
