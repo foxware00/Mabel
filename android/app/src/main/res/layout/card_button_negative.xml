@@ -14,12 +14,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<fragment
-    android:id="@+id/fragment_cardstream"
-    android:name="co.uk.aging.mabel.places.placepicker.cardstream.CardStreamFragment"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<co.uk.aging.mabel.places.placepicker.cardstream.CardActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_button"
+    style="@style/CardActionNegative"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:layout="@layout/cardstream"/>
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical" />

@@ -14,12 +14,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<fragment
-    android:id="@+id/fragment_cardstream"
-    android:name="co.uk.aging.mabel.places.placepicker.cardstream.CardStreamFragment"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:layout="@layout/cardstream"/>
+<resources>
+    <string name="intro_message">
+        <![CDATA[
+        
+            
+            This sample uses the PlacePicker.Builder to construct an Intent to launch the place
+            picker dialog. Users can select a place or add a new place,
+            which is then returned to the application.
+            
+            
+        
+        ]]>
+    </string>
+</resources>

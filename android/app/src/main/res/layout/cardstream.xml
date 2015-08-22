@@ -14,12 +14,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<fragment
-    android:id="@+id/fragment_cardstream"
-    android:name="co.uk.aging.mabel.places.placepicker.cardstream.CardStreamFragment"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:layout="@layout/cardstream"/>
+    android:fillViewport="true">
+
+    <co.uk.aging.mabel.places.placepicker.cardstream.CardStreamLinearLayout
+        style="@style/CardStream"
+        android:id="@+id/card_stream"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</ScrollView>
