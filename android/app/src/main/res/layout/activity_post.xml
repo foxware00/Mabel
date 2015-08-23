@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/post_linear">
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:labelFor="@+id/post_text_view"
+        android:text="Write a comment"
+        android:textColor="@color/wallet_bright_foreground_holo_dark"
+        android:background="@color/wallet_bright_foreground_holo_light"/>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:text="LOCATION BAYBAY"
+        android:background="@color/wallet_bright_foreground_holo_dark"
+        android:inputType="textAutoComplete"
+        android:hint="Enter a comment about this location"
+        android:id="@+id/post_text_view"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/wallet_bright_foreground_holo_light">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:labelFor="@+id/post_problem_or_solution"
+        android:text="Is this an issue or a solution?"
+        android:textColor="@color/wallet_bright_foreground_holo_dark"/>
+    <Switch
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/wallet_bright_foreground_holo_dark"
+        android:backgroundTint="@color/wallet_bright_foreground_holo_dark"
+        android:id="@+id/post_problem_or_solution"/>
+    </RelativeLayout>
+    
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:visibility="gone"
+            android:id="@+id/post_media_image"/>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_weight="5"
+            android:layout_height="0dp"
+            android:text="Upload Media"
+            android:id="@+id/post_upload_media_button"/>
+
+    <Button
+        android:id="@+id/post_button"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Post" />
+</LinearLayout>

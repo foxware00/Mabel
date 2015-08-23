@@ -16,6 +16,9 @@ import co.uk.aging.mabel.utils.DBConstants;
  */
 @ParseClassName("Submission")
 public class MapSubmission extends ParseObject {
+    public MapSubmission() {
+    }
+
     public String getDescription() {
         return getString(DBConstants.DESCRIPTION);
     }
@@ -48,6 +51,15 @@ public class MapSubmission extends ParseObject {
     }
     public void setProblemOrSolution(int problemOrSolution) {
         this.put(DBConstants.PROBLEM_OR_SOLUTION, problemOrSolution);
+    }
+
+    public String getProblemOrSolutionText() {
+        return getString(DBConstants.PROBLEM_OR_SOLUTION_TEXT);
+    }
+    public void setProblemOrSolutionText(String problemOrSolutionText) {
+        if (!TextUtils.isEmpty(problemOrSolutionText)) {
+            this.put(DBConstants.PROBLEM_OR_SOLUTION_TEXT, problemOrSolutionText);
+        }
     }
 
     public static ParseQuery<MapSubmission> getQuery() {
