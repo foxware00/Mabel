@@ -7,6 +7,7 @@
        -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <!-- PlacePicker also requires OpenGL ES version 2 -->
     <uses-feature
@@ -16,18 +17,28 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBElXNNn4cb4WGYl51zrE-IMstdVogu1xY"/>
+        <!--<activity-->
+            <!--android:name="co.uk.aging.mabel.PlacesActivity"-->
+            <!--android:label="Places">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
         <activity
-            android:name="co.uk.aging.mabel.PlacesActivity"
-            android:label="Places">
+            android:name="co.uk.aging.mabel.StartActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -37,7 +48,36 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="co.uk.aging.mabel.SearchActivity"
+            android:label="Search">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="co.uk.aging.mabel.AddActivity"
+            android:label="Search">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="co.uk.aging.mabel.FrontPageActivity"
+            android:label="Search">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             </intent-filter>
         </activity>
 

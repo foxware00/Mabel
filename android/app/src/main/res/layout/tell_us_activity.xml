@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <RelativeLayout android:id="@+id/topBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_alignParentTop="true"
+                    android:background="#FF3838">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_alignParentTop="true"
+                  android:layout_centerHorizontal="true"
+                  android:gravity="center"
+                  android:paddingTop="20dp"
+                  android:text="Mabel"
+                  android:textAlignment="center"
+                  android:textColor="#fff"
+                  android:textSize="16dp"
+                  android:textStyle="bold"
+            />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:paddingBottom="20dp"
+                  android:paddingLeft="20dp"
+                  android:text="What do you want to tell us?"
+                  android:textAlignment="center"
+                  android:textColor="#fff"
+                  android:textSize="32dp"
+            />
+
+    </RelativeLayout>
+
+    <EditText android:id="@+id/edit" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/topBar"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:textSize="32dp"/>
+
+    <Button android:id="@+id/add_image" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@+id/edit"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/addvideo"/>
+
+    <ImageView android:id="@+id/image" android:layout_width="match_parent"
+               android:layout_height="200dp"
+               android:layout_below="@id/add_image"
+               android:layout_centerHorizontal="true"
+               android:layout_margin="10dp"/>
+
+    <Button android:id="@+id/add" android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#FF3838"
+            android:gravity="center"
+            android:text="Add"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="24dp"/>
+
+
+</RelativeLayout>

@@ -18,6 +18,7 @@ package co.uk.aging.mabel.places.placepicker;
 
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import co.uk.aging.mabel.SearchActivity;
 import co.uk.aging.mabel.places.placepicker.cardstream.Card;
 import co.uk.aging.mabel.places.placepicker.cardstream.CardStream;
 import co.uk.aging.mabel.places.placepicker.cardstream.CardStreamFragment;
@@ -61,6 +63,7 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
     private static final String CARD_INTRO = "INTRO";
     private static final String CARD_PICKER = "PICKER";
     private static final String CARD_DETAIL = "DETAIL";
+    private static final String CARD_TEXT = "TEXT";
 
     /**
      * Action to launch the PlacePicker from a card. Identifies the card action.
@@ -121,6 +124,12 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
             }
 
             // END_INCLUDE(intent)
+        } else if (cardActionId == 2) {
+            try {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -197,7 +206,7 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
         // Add picker card.
         Card c = new Card.Builder(this, CARD_PICKER)
                 .setTitle(getString(R.string.pick_title))
-                .setDescription(getString(R.string.pick_text))
+                .setDescription("Search for a Place")
                 .addAction(getString(R.string.pick_action), ACTION_PICK_PLACE, Card.ACTION_NEUTRAL)
                 .setLayout(R.layout.card_google)
                 .build(getActivity());
@@ -212,10 +221,18 @@ public class PlacePickerFragment extends Fragment implements OnCardClickListener
 
         // Add and show introduction card.
         c = new Card.Builder(this, CARD_INTRO)
-                .setTitle(getString(R.string.intro_title))
-                .setDescription(getString(R.string.intro_message))
+                .setTitle("Welcome to Mabel!")
+                .setDescription("Please either add a note to the map, or search by location for notes people have left for you.")
                 .build(getActivity());
         getCardStream().addCard(c, true);
+
+        // Add and show introduction card.
+        Card c2 = new Card.Builder(this, CARD_TEXT)
+                .setTitle("Welcome to Mabel!")
+                .setDescription("Please either add a note to the map, or search by location for notes people have left for you.")
+                .addAction("Search by text", 2, Card.ACTION_POSITIVE)
+                .build(getActivity());
+        getCardStream().addCard(c2, true);
     }
 
     /**
