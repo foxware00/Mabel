@@ -6,5 +6,6 @@ package co.uk.aging.mabel.utils;
 public class Constants {
 
     public static final String LOCATION_EXTRA = "location";
+    public static final String MAP_SUB_EXTRA = "mapSub";
     public static final int CAMERA_EXTRA = 1;
 }

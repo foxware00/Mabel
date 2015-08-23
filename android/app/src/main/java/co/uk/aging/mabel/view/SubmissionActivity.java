@@ -67,12 +67,12 @@ public class SubmissionActivity extends Activity {
 
         Intent i = getIntent();
         LatLng location = i.getParcelableExtra(Constants.LOCATION_EXTRA);
-        if (!TextUtils.isEmpty(location.toString())) {
+        if (location != null && !TextUtils.isEmpty(location.toString())) {
             mTextView.setText(location.toString());
+            mMapSubmission.setGeoPoint(new ParseGeoPoint(location.latitude, location.longitude));
+            mMapSubmission.setDescription(location.toString());
         }
 
-        mMapSubmission.setGeoPoint(new ParseGeoPoint(location.latitude, location.longitude));
-        mMapSubmission.setDescription(location.toString());
         mMapSubmission.setProblemOrSolution(DBConstants.SUBMISSION_NEITHER);
     }
 

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,13 +26,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,6 +67,7 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
     private String selectedPostObjectId;
     private Location lastLocation;
     private Location currentLocation;
+    private Map<String, MapSubmission> mCurrentUserAnnotations;
 
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -121,9 +127,12 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
 
         // Enable the current location "blue dot"
         mapFragment.getMap().setMyLocationEnabled(true);
+        mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
+        mapFragment.getMap().getUiSettings().setTiltGesturesEnabled(false);
         Location l = mapFragment.getMap().getMyLocation();
         if (l != null) {
             updateZoom(new LatLng(l.getLatitude(), l.getLongitude()));
+            getNearbyAnnotations(null);
         }
         // Set up the camera change
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -139,6 +148,18 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
                 Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
                 intent.putExtra(Constants.LOCATION_EXTRA, latLng);
                 startActivity(intent);
+            }
+        });
+        mapFragment.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getTitle());
+                Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable(marker.getTitle(), mapSubmission);
+                intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
+                startActivity(intent);
+                return true;
             }
         });
 
@@ -161,6 +182,7 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
         }
         // Save the current radius
         lastRadius = radius;
+        getNearbyAnnotations(null);
     }
 
     /**
@@ -480,6 +502,31 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
     }
 
     private void getNearbyAnnotations(LatLng latLng) {
+        ParseQuery<MapSubmission> query = new ParseQuery<>("Submission");
+        query.findInBackground(new FindCallback<MapSubmission>() {
+            public void done(List<MapSubmission> annotations, ParseException e) {
+                if (e == null) {
+                    Log.d(TAG, "Retrieved " + annotations.size() + " annotations");
+                    addAnnotations(annotations);
+                } else {
+                    Log.d(TAG, "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
 
+    private void addAnnotations(List<MapSubmission> annotations) {
+        if (mCurrentUserAnnotations == null) {
+            mCurrentUserAnnotations = new HashMap<String, MapSubmission>();
+        }
+        for (MapSubmission submission : annotations) {
+            ParseGeoPoint gP = submission.getGeoPoint();
+            double lat = gP.getLatitude();
+            double lon = gP.getLongitude();
+            LatLng latLng = new LatLng(lat, lon);
+            String title = submission.getDescription().substring(0, 33) + "...";
+            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+            mCurrentUserAnnotations.put(title, submission);
+        }
     }
 }
