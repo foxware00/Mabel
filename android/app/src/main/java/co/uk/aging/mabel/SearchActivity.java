@@ -5,13 +5,19 @@ package co.uk.aging.mabel;
  */
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,8 +43,18 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
+import com.parse.SaveCallback;
 
+import java.nio.ByteBuffer;
+
+import co.uk.aging.mabel.model.MapSubmission;
 import co.uk.aging.mabel.places.search.GPSTracker;
+import co.uk.aging.mabel.utils.Constants;
+import co.uk.aging.mabel.utils.DBConstants;
 import co.uk.hackathon.mabel.R;
 
 
@@ -169,6 +185,8 @@ public class SearchActivity extends FragmentActivity implements
                         // todo Save place information to hash map
                         Toast.makeText(SearchActivity.this, "Added " + Html.fromHtml(place.getName() + "") + " to your itinerary", Toast.LENGTH_SHORT).show();
                         finish();
+                        Bitmap b = drawableToBitmap(mImage.getDrawable());
+                        addSubmission(place.getLatLng().longitude, place.getLatLng().latitude, place.getName().toString(), b);
                     }
                 });
 
@@ -180,6 +198,27 @@ public class SearchActivity extends FragmentActivity implements
             super.onActivityResult(requestCode, resultCode, data);
         }
         // END_INCLUDE(activity_result)
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 1;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 1;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
@@ -229,6 +268,8 @@ public class SearchActivity extends FragmentActivity implements
                     // todo Save place information to hash map
                     Toast.makeText(SearchActivity.this, "Added " + Html.fromHtml(place.getName() + "") + " to your itinerary", Toast.LENGTH_SHORT).show();
                     finish();
+                    Bitmap b = drawableToBitmap(mImage.getDrawable());
+                    addSubmission(place.getLatLng().longitude, place.getLatLng().latitude, place.getName().toString(), b);
                 }
             });
         }
@@ -239,6 +280,44 @@ public class SearchActivity extends FragmentActivity implements
         mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
         Log.i(LOG_TAG, "Google Places API connected.");
 
+    }
+
+    private void addSubmission(double lon, double lat, String description, Bitmap bitmap) {
+        MapSubmission mMapSubmission = new MapSubmission();
+
+        mMapSubmission.setGeoPoint(new ParseGeoPoint(lat, lon));
+        mMapSubmission.setDescription(description);
+        // Set up a progress dialog
+        final ProgressDialog dialog = new ProgressDialog(SearchActivity.this);
+        dialog.setMessage("Posting Post yall");
+        dialog.show();
+
+        if (bitmap != null) {
+            mMapSubmission.setFile(new ParseFile(DBConstants.FILE, bitmapToByteArray(bitmap), "bitmap"));
+        }
+        ParseACL acl = new ParseACL();
+        acl.setPublicReadAccess(true);
+        mMapSubmission.setACL(acl);
+        mMapSubmission.setProblemOrSolution(DBConstants.SUBMISSION_SOLUTION);
+
+        // Save the post
+        mMapSubmission.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        int bytes = bitmap.getByteCount();
+
+        ByteBuffer buffer = ByteBuffer.allocate(bytes);
+        bitmap.copyPixelsToBuffer(buffer);
+
+        return buffer.array();
     }
 
     @Override

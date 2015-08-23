@@ -110,7 +110,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
         write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(FrontPageActivity.this, AddActivity.class));
+                startActivity(new Intent(FrontPageActivity.this, SubmissionActivity.class));
             }
         });
 
@@ -121,7 +121,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
         ParseObject.registerSubclass(MapSubmission.class);
         ParseUser.enableAutomaticUser();
 
-        radius = 100f;
+        radius = 10f;
         lastRadius = radius;
         android.support.v4.app.FragmentManager fragmentManager = this.getSupportFragmentManager();
         mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.mainMap);
@@ -544,12 +544,14 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
         }
         for (MapSubmission submission : annotations) {
             ParseGeoPoint gP = submission.getGeoPoint();
-            double lat = gP.getLatitude();
-            double lon = gP.getLongitude();
-            LatLng latLng = new LatLng(lat, lon);
-            String title = submission.getDescription().substring(0, 33) + "...";
-            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
-            mCurrentUserAnnotations.put(title, submission);
+            if (gP != null) {
+                double lat = gP.getLatitude();
+                double lon = gP.getLongitude();
+                LatLng latLng = new LatLng(lat, lon);
+                String title = submission.getDescription().substring(0, 33) + "...";
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+                mCurrentUserAnnotations.put(title, submission);
+            }
         }
     }
 }
