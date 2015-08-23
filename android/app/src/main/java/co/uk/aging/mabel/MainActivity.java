@@ -9,7 +9,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
+import co.uk.aging.mabel.model.MapSubmission;
 import co.uk.hackathon.mabel.R;
 
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "HinYTJUCGswptyd2nphcj9Yn7hU1aSb9C2EbBJRX", "X7o7yOigQi16GSCei2rV7q6JQf3ruJ8kzGfRmYJE");
+        ParseObject.registerSubclass(MapSubmission.class);
     }
 
     @Override

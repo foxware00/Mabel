@@ -10,9 +10,10 @@ public class DBConstants {
     public static int SUBMISSION_UNDEFINED    = -1;
 
     // DB Key Constants
-    public static String DESCRIPTION          = "description";
-    public static String MEDIA                = "media";
-    public static String PROBLEM_OR_SOLUTION  = "problemOrSolution";
-    public static String GEO_POINT            = "geopoint";
-    public static String FILE                 = "file";
+    public static String DESCRIPTION                = "description";
+    public static String MEDIA                      = "media";
+    public static String PROBLEM_OR_SOLUTION        = "problemOrSolution";
+    public static String PROBLEM_OR_SOLUTION_TEXT   = "problemOrSolutionText";
+    public static String GEO_POINT                  = "geopoint";
+    public static String FILE                       = "file";
 }

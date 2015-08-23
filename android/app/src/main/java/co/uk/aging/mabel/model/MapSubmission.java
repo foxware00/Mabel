@@ -8,6 +8,8 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.io.Serializable;
+
 import co.uk.aging.mabel.utils.DBConstants;
 
 /**
@@ -15,7 +17,10 @@ import co.uk.aging.mabel.utils.DBConstants;
  * Created by Ryan McClarnon (ryan@breezie.com) on 22/08/15.
  */
 @ParseClassName("Submission")
-public class MapSubmission extends ParseObject {
+public class MapSubmission extends ParseObject implements Serializable {
+    public MapSubmission() {
+    }
+
     public String getDescription() {
         return getString(DBConstants.DESCRIPTION);
     }
@@ -48,6 +53,15 @@ public class MapSubmission extends ParseObject {
     }
     public void setProblemOrSolution(int problemOrSolution) {
         this.put(DBConstants.PROBLEM_OR_SOLUTION, problemOrSolution);
+    }
+
+    public String getProblemOrSolutionText() {
+        return getString(DBConstants.PROBLEM_OR_SOLUTION_TEXT);
+    }
+    public void setProblemOrSolutionText(String problemOrSolutionText) {
+        if (!TextUtils.isEmpty(problemOrSolutionText)) {
+            this.put(DBConstants.PROBLEM_OR_SOLUTION_TEXT, problemOrSolutionText);
+        }
     }
 
     public static ParseQuery<MapSubmission> getQuery() {

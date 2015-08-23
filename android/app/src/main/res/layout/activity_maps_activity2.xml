@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <fragment
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainMap"
+        tools:context="co.uk.aging.mabel.MapsActivity2"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        android:layout_height="56dp">
+        <Button android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/search"
+            android:text="Search"
+            android:textColor="#fff"
+            android:background="#FF3838"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="24dp"
+            android:layout_marginRight="8dp"/>
+
+        <Button android:layout_width="0dp" android:layout_height="40dp"
+            android:layout_weight="1"
+            android:id="@+id/write"
+            android:text="Write"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:background="#FF3838"
+            android:textSize="24dp"
+            android:layout_marginLeft="8dp"
+            android:textAlignment="center"/>
+
+    </LinearLayout>
+
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:background="#FF3838">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Mabel"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -8,8 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -47,7 +45,7 @@ import co.uk.aging.mabel.utils.Constants;
 import co.uk.aging.mabel.view.SubmissionActivity;
 import co.uk.hackathon.mabel.R;
 
-public class FrontPageActivity extends FragmentActivity implements LocationListener,
+public class MapsActivity2 extends FragmentActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = MapsActivity2.class.getSimpleName();
@@ -92,37 +90,16 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
-
-        setContentView(R.layout.activity_maps_activity2);
-
-        Button search = (Button) findViewById(R.id.search);
-        Button write = (Button) findViewById(R.id.write);
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FrontPageActivity.this, SearchActivity.class));
-            }
-        });
-
-        write.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(FrontPageActivity.this, AddActivity.class));
-            }
-        });
-
-        if (getActionBar() != null)
-            getActionBar().hide();
-
         Parse.initialize(this, "HinYTJUCGswptyd2nphcj9Yn7hU1aSb9C2EbBJRX", "X7o7yOigQi16GSCei2rV7q6JQf3ruJ8kzGfRmYJE");
         ParseObject.registerSubclass(MapSubmission.class);
         ParseUser.enableAutomaticUser();
 
         radius = 100f;
         lastRadius = radius;
+        setContentView(R.layout.activity_maps_activity2);
         android.support.v4.app.FragmentManager fragmentManager = this.getSupportFragmentManager();
         mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.mainMap);
         setUpMapIfNeeded();
@@ -149,42 +126,42 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
                 .build();
 
         // Enable the current location "blue dot"
-            mapFragment.getMap().setMyLocationEnabled(true);
-            mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
-            mapFragment.getMap().getUiSettings().setTiltGesturesEnabled(false);
-            Location l = mapFragment.getMap().getMyLocation();
-            if (l != null) {
-                updateZoom(new LatLng(l.getLatitude(), l.getLongitude()));
-                getNearbyAnnotations(null);
-            }
-            // Set up the camera change
-            mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                public void onCameraChange(CameraPosition position) {
-                    // When the camera changes, update the query
+        mapFragment.getMap().setMyLocationEnabled(true);
+        mapFragment.getMap().getUiSettings().setMapToolbarEnabled(false);
+        mapFragment.getMap().getUiSettings().setTiltGesturesEnabled(false);
+        Location l = mapFragment.getMap().getMyLocation();
+        if (l != null) {
+            updateZoom(new LatLng(l.getLatitude(), l.getLongitude()));
+            getNearbyAnnotations(null);
+        }
+        // Set up the camera change
+        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            public void onCameraChange(CameraPosition position) {
+            // When the camera changes, update the query
 //            doMapQuery();
-                }
-            });
+            }
+        });
 
-            mapFragment.getMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-                    Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
-                    intent.putExtra(Constants.LOCATION_EXTRA, latLng);
-                    startActivity(intent);
-                }
-            });
-            mapFragment.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getTitle());
-                    Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable(marker.getTitle(), mapSubmission);
-                    intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
-                    startActivity(intent);
-                    return true;
-                }
-            });
+        mapFragment.getMap().setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
+                intent.putExtra(Constants.LOCATION_EXTRA, latLng);
+                startActivity(intent);
+            }
+        });
+        mapFragment.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getTitle());
+                Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable(marker.getTitle(), mapSubmission);
+                intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
+                startActivity(intent);
+                return true;
+            }
+        });
 
     }
 
@@ -248,7 +225,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
 
     /**
      * Called when the Activity is no longer visible at all. Stop updates and disconnect.
-     */
+    */
     @Override
     public void onStop() {
         // If the client is connected
@@ -274,8 +251,8 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     }
 
     /**
-     * Zooms the map to show the area of interest based on the search radius
-     */
+    * Zooms the map to show the area of interest based on the search radius
+    */
     private void updateZoom(LatLng myLatLng) {
         // Get the bounds to zoom to
         LatLngBounds bounds = calculateBoundsWithCenter(myLatLng);
@@ -304,7 +281,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
 
     /**
      * Helper method to calculate the bounds for map zooming
-     */
+    */
     private LatLngBounds calculateBoundsWithCenter(LatLng myLatLng) {
         // Create a bounds
         LatLngBounds.Builder builder = LatLngBounds.builder();
@@ -376,8 +353,8 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     }
 
     /**
-     * In response to a request to stop updates, send a request to Location Services
-     */
+    * In response to a request to stop updates, send a request to Location Services
+    */
     private void stopPeriodicUpdates() {
         locationClient.disconnect();
     }
@@ -389,16 +366,16 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     }
 
     /**
-     * In response to a request to start updates, send a request to Location Services
-     */
+    * In response to a request to start updates, send a request to Location Services
+    */
     private void startPeriodicUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 locationClient, locationRequest, this);
     }
 
     /**
-     * Get the current location
-     */
+    * Get the current location
+    */
     private Location getLocation() {
         // If Google Play Services is available
         if (servicesConnected()) {
@@ -463,7 +440,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // Google Play services can resolve some errors it detects. If the error has a resolution, try
+    // Google Play services can resolve some errors it detects. If the error has a resolution, try
         // sending an Intent to start a Google Play services activity that can resolve error.
         if (connectionResult.hasResolution()) {
             try {
@@ -481,8 +458,8 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     }
 
     /**
-     * Show a dialog returned by Google Play services for the connection error code
-     */
+    * Show a dialog returned by Google Play services for the connection error code
+    */
     private void showErrorDialog(int errorCode) {
         // Get the error dialog from Google Play services
         Dialog errorDialog =
@@ -504,15 +481,15 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     }
 
     /**
-     * Helper method to get the Parse GEO point representation of a location
-     */
+    * Helper method to get the Parse GEO point representation of a location
+    */
     private ParseGeoPoint geoPointFromLocation(Location loc) {
         return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
     }
 
     /**
-     * Helper method to clean up old markers
-     */
+    * Helper method to clean up old markers
+    */
     private void cleanUpMarkers(Set<String> markersToKeep) {
         for (String objId : new HashSet<String>(mapMarkers.keySet())) {
             if (!markersToKeep.contains(objId)) {
@@ -553,4 +530,3 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
         }
     }
 }
-
