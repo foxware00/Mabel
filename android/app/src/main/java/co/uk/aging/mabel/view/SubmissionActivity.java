@@ -134,6 +134,7 @@ public class SubmissionActivity extends Activity {
         if (mImageBitmap != null) {
             mMapSubmission.setFile(new ParseFile(DBConstants.FILE, bitmapToByteArray(mImageBitmap), "bitmap"));
         }
+        mMapSubmission.setDescription(mTextView.getText().toString());
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(true);
         mMapSubmission.setACL(acl);

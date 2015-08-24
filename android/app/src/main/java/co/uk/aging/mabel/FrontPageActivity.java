@@ -3,6 +3,7 @@ package co.uk.aging.mabel;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -29,13 +30,16 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +48,7 @@ import java.util.Set;
 
 import co.uk.aging.mabel.model.MapSubmission;
 import co.uk.aging.mabel.utils.Constants;
+import co.uk.aging.mabel.view.AnnotationView;
 import co.uk.aging.mabel.view.SubmissionActivity;
 import co.uk.hackathon.mabel.R;
 
@@ -69,6 +74,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     private String selectedPostObjectId;
     private Location lastLocation;
     private Location currentLocation;
+    private LatLng currentLatLng;
     private Map<String, MapSubmission> mCurrentUserAnnotations;
 
 
@@ -93,7 +99,12 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+        Parse.enableLocalDatastore(getApplicationContext());
+
+        Parse.initialize(this, "HinYTJUCGswptyd2nphcj9Yn7hU1aSb9C2EbBJRX", "X7o7yOigQi16GSCei2rV7q6JQf3ruJ8kzGfRmYJE");
+        ParseObject.registerSubclass(MapSubmission.class);
+        ParseUser.enableAutomaticUser();
+
 
         setContentView(R.layout.activity_maps_activity2);
 
@@ -116,12 +127,7 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
 
         if (getActionBar() != null)
             getActionBar().hide();
-
-        Parse.initialize(this, "HinYTJUCGswptyd2nphcj9Yn7hU1aSb9C2EbBJRX", "X7o7yOigQi16GSCei2rV7q6JQf3ruJ8kzGfRmYJE");
-        ParseObject.registerSubclass(MapSubmission.class);
-        ParseUser.enableAutomaticUser();
-
-        radius = 10f;
+        radius = 100f;
         lastRadius = radius;
         android.support.v4.app.FragmentManager fragmentManager = this.getSupportFragmentManager();
         mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.mainMap);
@@ -155,12 +161,14 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
             Location l = mapFragment.getMap().getMyLocation();
             if (l != null) {
                 updateZoom(new LatLng(l.getLatitude(), l.getLongitude()));
-                getNearbyAnnotations(null);
+                getNearbyAnnotations();
             }
             // Set up the camera change
             mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                 public void onCameraChange(CameraPosition position) {
                     // When the camera changes, update the query
+                    currentLatLng = position.target;
+                    getNearbyAnnotations();
 //            doMapQuery();
                 }
             });
@@ -176,16 +184,50 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
             mapFragment.getMap().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getTitle());
-                    Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable(marker.getTitle(), mapSubmission);
-                    intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
-                    startActivity(intent);
+                    final MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getId());
+                    if (mapSubmission.getFile() != null) {
+                        ParseFile fileObject = mapSubmission.getFile();
+                        fileObject.getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    Log.d("test", "We've got data in data.");
+                                    // use data for something
+                                    Intent intent = new Intent(getApplicationContext(), AnnotationView.class);
+                                    intent.putExtra(Constants.MAP_SUB_EXTRA_UPDATED, mapSubmission.getUpdatedAt().toString());
+                                    intent.putExtra(Constants.MAP_SUB_EXTRA_DESCRIPTION, mapSubmission.getDescription());
+                                    intent.putExtra(Constants.MAP_SUB_EXTRA_LATITUDE, mapSubmission.getGeoPoint().getLatitude());
+                                    intent.putExtra(Constants.MAP_SUB_EXTRA_LONGITUDE, mapSubmission.getGeoPoint().getLongitude());
+                                    intent.putExtra(Constants.MAP_SUB_EXTRA_IMAGE, data);
+
+                                    startActivity(intent);
+
+                                } else {
+                                    Log.d("test", "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), AnnotationView.class);
+                        intent.putExtra(Constants.MAP_SUB_EXTRA_UPDATED, mapSubmission.getUpdatedAt().toString());
+                        intent.putExtra(Constants.MAP_SUB_EXTRA_DESCRIPTION, mapSubmission.getDescription());
+                        intent.putExtra(Constants.MAP_SUB_EXTRA_LATITUDE, mapSubmission.getGeoPoint().getLatitude());
+                        intent.putExtra(Constants.MAP_SUB_EXTRA_LONGITUDE, mapSubmission.getGeoPoint().getLongitude());
+
+                        startActivity(intent);
+                    }
                     return true;
                 }
             });
 
+    }
+
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
+        int bytes = bitmap.getByteCount();
+
+        ByteBuffer buffer = ByteBuffer.allocate(bytes);
+        bitmap.copyPixelsToBuffer(buffer);
+
+        return buffer.array();
     }
 
     @Override
@@ -198,53 +240,26 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
             // If the search distance preference has been changed, move
             // map to new bounds.
             // Update the circle map
-            updateCircle(myLatLng);
+//            updateCircle(myLatLng);
             if (lastRadius != radius) {
                 updateZoom(myLatLng);
             }
         }
         // Save the current radius
         lastRadius = radius;
-        getNearbyAnnotations(null);
+        getNearbyAnnotations();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mainMap))
                     .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-    }
 
     /**
      * Called when the Activity is no longer visible at all. Stop updates and disconnect.
@@ -524,12 +539,20 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
         }
     }
 
-    private void getNearbyAnnotations(LatLng latLng) {
+    private void getNearbyAnnotations() {
         ParseQuery<MapSubmission> query = new ParseQuery<>("Submission");
+//        if (currentLatLng != null) {
+//            query.whereWithinKilometers("location",
+//                    new ParseGeoPoint(
+//                            currentLatLng.latitude, currentLatLng.longitude), 500000000);
+//        } else {
+//            return;
+//        }
         query.findInBackground(new FindCallback<MapSubmission>() {
             public void done(List<MapSubmission> annotations, ParseException e) {
                 if (e == null) {
                     Log.d(TAG, "Retrieved " + annotations.size() + " annotations");
+                    removeAllAnnotations();
                     addAnnotations(annotations);
                 } else {
                     Log.d(TAG, "Error: " + e.getMessage());
@@ -540,19 +563,29 @@ public class FrontPageActivity extends FragmentActivity implements LocationListe
 
     private void addAnnotations(List<MapSubmission> annotations) {
         if (mCurrentUserAnnotations == null) {
-            mCurrentUserAnnotations = new HashMap<String, MapSubmission>();
+            mCurrentUserAnnotations = new HashMap<>();
         }
         for (MapSubmission submission : annotations) {
-            ParseGeoPoint gP = submission.getGeoPoint();
-            if (gP != null) {
-                double lat = gP.getLatitude();
-                double lon = gP.getLongitude();
-                LatLng latLng = new LatLng(lat, lon);
-                String title = submission.getDescription().substring(0, 33) + "...";
-                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
-                mCurrentUserAnnotations.put(title, submission);
+            if (submission != null) {
+                ParseGeoPoint gP = submission.getGeoPoint();
+                if (gP != null) {
+                    double lat = gP.getLatitude();
+                    double lon = gP.getLongitude();
+                    LatLng latLng = new LatLng(lat, lon);
+                    String title = submission.getDescription();
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+                    mCurrentUserAnnotations.put(marker.getId(), submission);
+                }
             }
         }
+    }
+
+    private void removeAllAnnotations() {
+        if (mCurrentUserAnnotations != null) {
+            mCurrentUserAnnotations = new HashMap<String, MapSubmission>();
+        }
+        mMap.clear();
+        // TODO: re-add gplaces annnotations
     }
 }
 

@@ -156,8 +156,8 @@ public class MapsActivity2 extends FragmentActivity implements LocationListener,
                 MapSubmission mapSubmission = mCurrentUserAnnotations.get(marker.getTitle());
                 Intent intent = new Intent(getApplicationContext(), SubmissionActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable(marker.getTitle(), mapSubmission);
-                intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
+//                b.putSerializable(marker.getTitle(), mapSubmission);
+//                intent.putExtra(Constants.MAP_SUB_EXTRA, mapSubmission);
                 startActivity(intent);
                 return true;
             }

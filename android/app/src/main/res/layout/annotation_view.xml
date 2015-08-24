@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#d1d1d1">
+
+    <RelativeLayout android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:background="#FF3838">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="Mabel"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            />
+    </RelativeLayout>
+
+    <fragment
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/annotation_map"
+        tools:context="co.uk.aging.mabel.MapsActivity2"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="4dp"
+        android:background="#FF3838"></View>
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:background="#ffffff">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/annotation_icon_small"
+            ></ImageView>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Location Name"
+            android:textSize="28dp"
+            android:layout_toRightOf="@+id/annotation_icon_small"
+            android:id="@+id/annotation_place_name"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:text="Street Name"
+            android:textSize="18dp"
+            android:layout_toRightOf="@+id/annotation_icon_small"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/annotation_street_name"/>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#9a9a9a"></View>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:background="#CCC"
+            android:id="@+id/annotation_image_view"
+            />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="#ffffff">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="Annontation Description"
+                android:textSize="18dp"
+                android:id="@+id/annotation_description"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:text="Last Updated"
+                android:textSize="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/annotation_last_updated"/>
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="+1"
+                android:textSize="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentBottom="true"
+                android:textColor="#FF3838"
+                android:layout_alignParentRight="true"
+                android:id="@+id/annotation_numbers"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="#FF3838">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Confirmed by 10 people"
+                android:textAlignment="center"
+                android:layout_marginTop="18dp"
+                android:textSize="15dp"
+                android:textColor="#FFF"
+                android:layout_marginLeft="5dp"/>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentRight="true"
+                android:padding="0dp"
+                android:elevation="40dp"
+                android:background="#FF3838"
+                android:textSize="20dp"
+                android:textColor="#FFF"
+                android:text="It's fixed now"
+                android:textAllCaps="false"
+                android:id="@+id/annotation_fixed_now"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,8 +8,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.io.Serializable;
-
 import co.uk.aging.mabel.utils.DBConstants;
 
 /**
@@ -17,7 +15,7 @@ import co.uk.aging.mabel.utils.DBConstants;
  * Created by Ryan McClarnon (ryan@breezie.com) on 22/08/15.
  */
 @ParseClassName("Submission")
-public class MapSubmission extends ParseObject implements Serializable {
+public class MapSubmission extends ParseObject {
     public MapSubmission() {
     }
 

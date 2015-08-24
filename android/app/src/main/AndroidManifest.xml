@@ -3,7 +3,7 @@
     package="co.uk.hackathon.mabel" >
 
     <!--
-       PlacePicker requires the ACCESS_FINE_LOCATION permission and a geo API key.
+       PlacePicker requires the ACCESS_FINE_LOCATION permission and a geo  key.
        See this page for more information on how to obtain an API key:
        https://developers.google.com/places/documentation/android/start
        -->
@@ -82,12 +82,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name="co.uk.aging.mabel.view.SubmissionActivity"
             android:label="@string/title_activity_post_activity" >
+        </activity>
+
+        <activity
+            android:name="co.uk.aging.mabel.view.AnnotationView"
+             >
         </activity>
 
 
